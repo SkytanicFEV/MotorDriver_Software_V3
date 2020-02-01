@@ -26,24 +26,22 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-// Desired frequency of the timers in KHz
-#define DESIRED_TIM_FREQ_KHZ			10U
-// Calculate period of the timer
-#define TIM_PERIOD						(uint16_t) (PROC_FREQ_KHZ / DESIRED_TIM_FREQ_KHZ)
-// Timer dead time
-#define TIM_DEADTIME					10U
+/* USER CODE BEGIN Includes */
 
-TIM_HandleTypeDef htim1;
-TIM_HandleTypeDef htim3;
-TIM_HandleTypeDef htim15;
+/* USER CODE END Includes */
 
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim3;
+
+/* USER CODE BEGIN Private defines */
+
+/* USER CODE END Private defines */
 
 void MX_TIM1_Init(void);
 void MX_TIM3_Init(void);
-void MX_TIM15_Init(void);
                         
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-                                                            
+                    
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */
