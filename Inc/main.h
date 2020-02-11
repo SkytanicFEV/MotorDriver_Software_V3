@@ -29,70 +29,25 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
+#include "control.h"
+#include "adc.h"
+#include "gpio.h"
+#include "tim.h"
+#include "usart.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
-
-/* USER CODE END EC */
-
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
+// Enum for phases
+typedef enum
+{
+	phase_U = 0,
+	phase_V,
+	phase_W,
+}phase_t;
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
 /* Private defines -----------------------------------------------------------*/
-#define VOLTAGE_PHASE_U_Pin GPIO_PIN_0
-#define VOLTAGE_PHASE_U_GPIO_Port GPIOA
-#define VOLTAGE_PHASE_V_Pin GPIO_PIN_1
-#define VOLTAGE_PHASE_V_GPIO_Port GPIOA
-#define VOLTAGE_PHASE_W_Pin GPIO_PIN_2
-#define VOLTAGE_PHASE_W_GPIO_Port GPIOA
-#define THROTTLE_Pin GPIO_PIN_6
-#define THROTTLE_GPIO_Port GPIOA
-#define PWM_PHASE_U_LOW_Pin GPIO_PIN_7
-#define PWM_PHASE_U_LOW_GPIO_Port GPIOA
-#define PWM_PHASE_W_LOW_Pin GPIO_PIN_0
-#define PWM_PHASE_W_LOW_GPIO_Port GPIOB
-#define PWM_PHASE_V_LOW_Pin GPIO_PIN_1
-#define PWM_PHASE_V_LOW_GPIO_Port GPIOB
-#define HAL_A_Pin GPIO_PIN_6
-#define HAL_A_GPIO_Port GPIOC
-#define HAL_B_Pin GPIO_PIN_7
-#define HAL_B_GPIO_Port GPIOC
-#define HAL_C_Pin GPIO_PIN_8
-#define HAL_C_GPIO_Port GPIOC
-#define PWM_PHASE_U_HIGH_Pin GPIO_PIN_8
-#define PWM_PHASE_U_HIGH_GPIO_Port GPIOA
-#define PWM_PHASE_W_HIGH_Pin GPIO_PIN_9
-#define PWM_PHASE_W_HIGH_GPIO_Port GPIOA
-#define PWM_PHASE_V_HIGH_Pin GPIO_PIN_10
-#define PWM_PHASE_V_HIGH_GPIO_Port GPIOA
-#define MASTER_HEARTBEAT_Pin GPIO_PIN_11
-#define MASTER_HEARTBEAT_GPIO_Port GPIOA
-#define EXTERNAL_TRIGGER_Pin GPIO_PIN_12
-#define EXTERNAL_TRIGGER_GPIO_Port GPIOA
-#define OUTPUT_ON_SWITCH_Pin GPIO_PIN_2
-#define OUTPUT_ON_SWITCH_GPIO_Port GPIOD
-/* USER CODE BEGIN Private defines */
 
-/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }

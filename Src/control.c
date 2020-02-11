@@ -14,13 +14,13 @@
   */
 void FindWaveformPhase(void)
 {
-	if(GPIOB->IDR & HALL_A_PIN)
+	if(GPIOC->IDR & HALL_A_PIN)
 	{
-		if(GPIOB->IDR & HALL_B_PIN)
+		if(GPIOC->IDR & HALL_B_PIN)
 		{
 			waveformPhase = waveform_Phase4;
 		}
-		else if(GPIOB->IDR & HALL_C_PIN)
+		else if(GPIOC->IDR & HALL_C_PIN)
 		{
 			waveformPhase = waveform_Phase6;
 
@@ -32,9 +32,9 @@ void FindWaveformPhase(void)
 	}
 	else
 	{
-		if(GPIOB->IDR & HALL_B_PIN)
+		if(GPIOC->IDR & HALL_B_PIN)
 		{
-			if(GPIOB->IDR & HALL_C_PIN)
+			if(GPIOC->IDR & HALL_C_PIN)
 			{
 				waveformPhase = waveform_Phase2;
 
@@ -47,7 +47,7 @@ void FindWaveformPhase(void)
 		}
 		else
 		{
-			if(GPIOB->IDR & HALL_C_PIN)
+			if(GPIOC->IDR & HALL_C_PIN)
 			{
 				waveformPhase = waveform_Phase1;
 			}

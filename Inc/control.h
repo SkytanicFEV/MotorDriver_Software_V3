@@ -10,6 +10,33 @@
 
 #include "main.h"
 
+// Enum describing the state of each phase
+typedef enum
+{
+	phaseOff = 0,
+	phaseHigh,
+	phaseLow,
+}phaseState_t;
+
+// Enum describing the phase of the waveform
+typedef enum
+{
+	waveform_NoWaveform = 0,
+	waveform_Phase1 = 1,
+	waveform_Phase2,
+	waveform_Phase3,
+	waveform_Phase4,
+	waveform_Phase5,
+	waveform_Phase6,
+}waveformPhase_t;
+
+// Enum describing output state
+typedef enum
+{
+	outputOff = 0,
+	outputOn,
+}outputState_t;
+
 // Switch state variables
 phaseState_t phaseU_State;
 phaseState_t phaseW_State;
