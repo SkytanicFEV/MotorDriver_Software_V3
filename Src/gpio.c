@@ -36,12 +36,18 @@ void MX_GPIO_Init(void)
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_GPIOD_CLK_ENABLE();
-
+#ifndef ALWAYS_ENABLE
 	/*Configure GPIO pin : PtPin */
 	GPIO_InitStruct.Pin = OUTPUT_ON_SWITCH_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(OUTPUT_ON_SWITCH_PORT, &GPIO_InitStruct);
+
+	// Enable interrupts in the NVIC
+	HAL_NVIC_SetPriority(EXTI2_3_IRQn, 5, 0);
+	HAL_NVIC_EnableIRQ(EXTI2_3_IRQn);
+#endif
+
 
 }
 

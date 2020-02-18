@@ -8,6 +8,42 @@
 #include "control.h"
 
 /**
+  * @brief Function to enable the motor driver output
+  * @param none
+  * @retval none
+  */
+void EnableMotorDriver(void)
+{
+	// Only need to enable if the board is disabled
+	if(motorEnable == Disabled)
+	{
+		HAL_TIM_MspPostInit(&htim1);
+
+		motorEnable = Enabled;
+	}
+}
+
+/**
+  * @brief Function to enable the motor driver output
+  * @param none
+  * @retval none
+  */
+void DisableMotorDriver(void)
+{
+	// Only need to disable if the board is enabled
+	if(motorEnable == Enabled)
+	{
+	    HAL_GPIO_DeInit(GPIOA, PWM_PHASE_U_LOW_PIN | PWM_PHASE_U_HIGH_PIN | PWM_PHASE_W_HIGH_PIN | PWM_PHASE_V_HIGH_PIN
+	                          | MASTER_HEARTBEAT_PIN | EXTERNAL_TRIGGER_PIN);
+
+	    HAL_GPIO_DeInit(GPIOB, PWM_PHASE_W_LOW_PIN | PWM_PHASE_V_LOW_PIN);
+
+		motorEnable = Disabled;
+
+	}
+}
+
+/**
   * @brief Function to find the waveform phase based on the hall effect values
   * @param none
   * @retval none

@@ -29,6 +29,8 @@
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim3;
 
+#define TIM_PERIOD					((uint32_t) 800)
+
 void MX_TIM1_Init(void);
 void MX_TIM3_Init(void);
                         

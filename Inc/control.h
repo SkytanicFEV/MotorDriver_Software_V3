@@ -37,6 +37,16 @@ typedef enum
 	outputOn,
 }outputState_t;
 
+// Deadtime of the PWM
+#define PWM_DEADTIME					(10U)
+// Maximum ADC value of the throttle
+#define THROTTLE_MAX_VALUE				((uint16_t) 4095)
+// Maximum pulse width
+#define MAX_AMPLITUDE					((uint32_t) (TIM_PERIOD * .9))
+// Minimum pulse width
+#define MIN_AMPLITUDE					((uint32_t) 50)
+
+
 // Switch state variables
 phaseState_t phaseU_State;
 phaseState_t phaseW_State;
@@ -53,6 +63,20 @@ waveformPhase_t waveformPhase;
 
 // Current state of the output
 outputState_t outputState;
+
+/**
+  * @brief Function to enable the motor driver output
+  * @param none
+  * @retval none
+  */
+void EnableMotorDriver(void);
+
+/**
+  * @brief Function to enable the motor driver output
+  * @param none
+  * @retval none
+  */
+void DisableMotorDriver(void);
 
 /**
   * @brief Function to find the waveform phase based on the hall effect values

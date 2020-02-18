@@ -43,11 +43,21 @@ typedef enum
 	phase_W,
 }phase_t;
 
+// Enum for enable/disbale
+typedef enum
+{
+	Disabled = 0,
+	Enabled
+}enable_t;
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
+#define ALWAYS_ENABLE
+
 /* Private defines -----------------------------------------------------------*/
 
+enable_t motorEnable;
 
 #ifdef __cplusplus
 }

@@ -121,6 +121,21 @@ void DMA1_Channel1_IRQHandler(void)
   /* USER CODE END DMA1_Channel1_IRQn 1 */
 }
 
+void EXTI2_3_IRQHandler(void)
+{
+	HAL_GPIO_EXTI_IRQHandler(OUTPUT_ON_SWITCH_PIN);
+
+}
+
+void ADC1_IRQHandler(void)
+{
+	HAL_ADC_IRQHandler(&hadc);
+}
+
+void TIM1_CC_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&htim1);
+}
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

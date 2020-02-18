@@ -23,10 +23,24 @@
  extern "C" {
 #endif
 
+ typedef enum
+ {
+	 ADC_Voltage_Phase_U = 0,
+	 ADC_Voltage_Phase_V,
+	 ADC_Voltage_Phase_W,
+	 ADC_Throttle,
+ }adcChannel_t;
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-extern ADC_HandleTypeDef hadc;
+#define NUM_ADC_CHANNEL				(4U)
+
+ADC_HandleTypeDef hadc;
+DMA_HandleTypeDef hdma_adc;
+uint32_t adc_buffer[NUM_ADC_CHANNEL];
+
+adcChannel_t currentChannel;
+
 
 void MX_ADC_Init(void);
 

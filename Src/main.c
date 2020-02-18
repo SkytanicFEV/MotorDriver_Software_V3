@@ -35,6 +35,12 @@ void SystemClock_Config(void);
   */
 int main(void)
 {
+
+
+
+	// Start with the phase U voltage channel on the ADC
+	currentChannel = ADC_Throttle;
+
 	/* MCU Configuration--------------------------------------------------------*/
 
 	// Reset of all peripherals, Initializes the Flash interface and the Systick.
@@ -51,10 +57,29 @@ int main(void)
 	MX_TIM3_Init();
 	MX_USART1_UART_Init();
 
-	// Infinite loopc
+#ifdef ALWAYS_ENABLE
+	motorEnable = Enabled;
+//	EnableMotorDriver();
+#else
+	motorEnable = Disabled;
+#endif
+
+//	// Start the DMA transfer
+//	if(HAL_ADC_Start_DMA(&hadc, adc_buffer, NUM_ADC_CHANNEL) != HAL_OK)
+//	{
+//		Error_Handler();
+//	}
+//
+//	HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 1, 0);
+//	HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+
+	// Infinite loop
 	while (1)
 	{
-
+//		// Update the timer capture compares
+//		TIM1->CCR1 = (uint16_t) waveformAmplitude;
+//		TIM1->CCR2 = (uint16_t) waveformAmplitude;
+//		TIM1->CCR3 = (uint16_t) waveformAmplitude;
 	}
 }
 
@@ -100,6 +125,81 @@ void SystemClock_Config(void)
 		Error_Handler();
 	}
 }
+
+/**
+  * @brief  Handles call backs from EXTI interrupts
+  * @param  Pin that was interrupted
+  * @retval None
+  */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	// Check to see if the master clock pin was interrupted
+	if(GPIO_Pin == OUTPUT_ON_SWITCH_PIN)
+	{
+		if(GPIOD->IDR & OUTPUT_ON_SWITCH_PIN)
+		{
+			EnableMotorDriver();
+		}
+		else
+		{
+			DisableMotorDriver();
+		}
+
+	}
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
+{
+	switch(currentChannel)
+	{
+	case(ADC_Voltage_Phase_U):
+		// Update state machine to the next channel
+		currentChannel = ADC_Voltage_Phase_V;
+		break;
+	case(ADC_Voltage_Phase_V):
+		// Update state machine to the next channel
+		currentChannel = ADC_Voltage_Phase_W;
+		break;
+	case(ADC_Voltage_Phase_W):
+		// Update state machine to the next channel
+		currentChannel = ADC_Throttle;
+		break;
+	case(ADC_Throttle):
+		// Get the current ADC conversion
+		throttleValue = (ADC1->DR / 2) + (throttleValue / 2);
+		// Update the waveform amplitudes
+		waveformAmplitude = TIM_PERIOD * throttleValue / (THROTTLE_MAX_VALUE);
+		// Check for maximums
+		if(waveformAmplitude > MAX_AMPLITUDE)
+		{
+			waveformAmplitude = MAX_AMPLITUDE;
+		}
+		else if(waveformAmplitude < MIN_AMPLITUDE)
+		{
+			waveformAmplitude = MIN_AMPLITUDE;
+		}
+		// Update the timer capture compares
+		TIM1->CCR1 = (uint16_t) waveformAmplitude;
+		TIM1->CCR2 = (uint16_t) waveformAmplitude;
+		TIM1->CCR3 = (uint16_t) waveformAmplitude;
+		// Update the state machine back to the beginning
+//		currentChannel = ADC_Voltage_Phase_U;
+		break;
+	default:
+		break;
+	}
+
+}
+
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+
+}
+
+//void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
+//{
+//
+//}
 
 /**
   * @brief  This function is executed in case of error occurrence.

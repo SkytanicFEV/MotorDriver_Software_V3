@@ -38,7 +38,7 @@ void MX_TIM1_Init(void)
 	htim1.Instance = TIM1;
 	htim1.Init.Prescaler = 0;
 	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim1.Init.Period = 800;
+	htim1.Init.Period = TIM_PERIOD;
 	htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim1.Init.RepetitionCounter = 0;
 	htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
@@ -96,7 +96,7 @@ void MX_TIM1_Init(void)
 	sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
 	sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
 	sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
-	sBreakDeadTimeConfig.DeadTime = 10;
+	sBreakDeadTimeConfig.DeadTime = PWM_DEADTIME;
 	sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
 	sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
 	sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_ENABLE;
@@ -104,27 +104,60 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
+#ifdef ALWAYS_ENABLE
 	HAL_TIM_MspPostInit(&htim1);
+#endif
 
 	// Enable clock tree
 	__HAL_RCC_TIM1_CLK_ENABLE();
 
 	// Start Waveforms
-	if(HAL_TIM_Base_Start_IT(&htim1) != HAL_OK)
-	{
-		Error_Handler();
-	}
-	// Start Waveforms
+//	if(HAL_TIM_Base_Start(&htim1) != HAL_OK)
+//	{
+//		Error_Handler();
+//	}
+	// Start Channel 1 Waveforms
 	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1) != HAL_OK)
 	{
 		Error_Handler();
 	}
-	// Start Waveforms
+	// Start Channel 1 Negative Waveforms
 	if(HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1) != HAL_OK)
 	{
 		Error_Handler();
 	}
 
+	// Start Channel 2 Waveforms
+	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	// Start Channel 2 Negative Waveforms
+	if(HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	// Start Channel 3 Waveforms
+	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	// Start Channel 3 Negative Waveforms
+	if(HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	// Start Channel 4 Waveforms
+	if(HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_4) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	// Configure and enable TIM3 interrupt channel in NVIC
+	HAL_NVIC_SetPriority(TIM1_CC_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(TIM1_CC_IRQn);
 }
 /* TIM3 init function */
 void MX_TIM3_Init(void)
