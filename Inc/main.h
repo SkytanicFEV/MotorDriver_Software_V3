@@ -53,7 +53,12 @@ typedef enum
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
-#define ALWAYS_ENABLE
+// Un-comment this to have the motor driver always enabled
+//#define ALWAYS_ENABLE
+// Comment this to disable complimentary waveforms
+//#define COMPLIMENTARY_OUTPUT
+// Un-comment this to use a manual hall effect control algorithm
+#define MANUAL_HALL
 
 /* Private defines -----------------------------------------------------------*/
 

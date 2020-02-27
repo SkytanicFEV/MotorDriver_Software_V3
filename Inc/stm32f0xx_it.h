@@ -24,27 +24,7 @@
 
 #ifdef __cplusplus
  extern "C" {
-#endif 
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
-
-/* USER CODE END EC */
-
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
+#endif
 
 /* Exported functions prototypes ---------------------------------------------*/
 void NMI_Handler(void);
@@ -55,9 +35,8 @@ void SysTick_Handler(void);
 void DMA1_Channel1_IRQHandler(void);
 void ADC1_IRQHandler(void);
 void EXTI2_3_IRQHandler(void);
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
+void EXTI4_15_IRQHandler(void);
+void USART1_IRQHandler(void);
 
 #ifdef __cplusplus
 }

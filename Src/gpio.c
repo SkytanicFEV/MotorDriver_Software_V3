@@ -47,7 +47,30 @@ void MX_GPIO_Init(void)
 	HAL_NVIC_SetPriority(EXTI2_3_IRQn, 5, 0);
 	HAL_NVIC_EnableIRQ(EXTI2_3_IRQn);
 #endif
+#ifdef MANUAL_HALL
+    GPIO_InitStruct.Pin = HALL_A_PIN | HALL_B_PIN | HALL_C_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+	// Enable interrupts in the NVIC
+	HAL_NVIC_SetPriority(EXTI4_15_IRQn, 5, 0);
+	HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
+#endif
+#ifndef COMPLIMENTARY_OUTPUT
+		GPIO_InitStruct.Pin = PWM_PHASE_U_LOW_PIN;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+		GPIO_InitStruct.Pin = PWM_PHASE_W_LOW_PIN|PWM_PHASE_V_LOW_PIN;
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+#endif
 
 }
 

@@ -121,14 +121,20 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
-	// Start Channel 1 Negative Waveforms
-	if(HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1) != HAL_OK)
+	// Start Channel 2 Waveforms
+	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	// Start Channel 3 Waveforms
+	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3) != HAL_OK)
 	{
 		Error_Handler();
 	}
 
-	// Start Channel 2 Waveforms
-	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2) != HAL_OK)
+#ifdef COMPLIMENTARY_OUTPUT
+	// Start Channel 1 Negative Waveforms
+	if(HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1) != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -137,17 +143,12 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
-
-	// Start Channel 3 Waveforms
-	if(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3) != HAL_OK)
-	{
-		Error_Handler();
-	}
 	// Start Channel 3 Negative Waveforms
 	if(HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3) != HAL_OK)
 	{
 		Error_Handler();
 	}
+#endif
 
 	// Start Channel 4 Waveforms
 	if(HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_4) != HAL_OK)
@@ -256,8 +257,16 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 		PA10     ------> TIM1_CH3
 		PA11     ------> TIM1_CH4
 		*/
-		GPIO_InitStruct.Pin = PWM_PHASE_U_LOW_PIN|PWM_PHASE_U_HIGH_PIN|PWM_PHASE_W_HIGH_PIN|PWM_PHASE_V_HIGH_PIN
+		GPIO_InitStruct.Pin = PWM_PHASE_U_HIGH_PIN|PWM_PHASE_W_HIGH_PIN|PWM_PHASE_V_HIGH_PIN
 							  |MASTER_HEARTBEAT_PIN;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF2_TIM1;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+#ifdef COMPLIMENTARY_OUTPUT
+		GPIO_InitStruct.Pin = PWM_PHASE_U_LOW_PIN;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -270,6 +279,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 		GPIO_InitStruct.Alternate = GPIO_AF2_TIM1;
 		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+#endif
 	}
 
 }

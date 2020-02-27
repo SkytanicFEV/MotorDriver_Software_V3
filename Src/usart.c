@@ -42,6 +42,16 @@ void MX_USART1_UART_Init(void)
 		Error_Handler();
 	}
 
+	//Disable interrupts except RXNE, enable FIFO
+//	huart1.Instance->CR1 = 0;
+//	huart1.Instance->CR1 |= UART_RXNEIE | UART_FIFOEN | UART_TE | UART_RE;
+//
+//	//Configure FIFO thresholds
+//	huart1.Instance->CR3 |= UART_TXFIFO_HALF_DEPTH | UART_RXFTIE_BIT | UART_RXFIFO_3OUT4_DEPTH;
+//
+//	//Enable UART1
+//	huart1.Instance->CR1 |= UART_UE;
+
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -64,6 +74,11 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	// USART1 interrupt Init
+	HAL_NVIC_SetPriority(USART1_IRQn, 10, 0);
+	HAL_NVIC_EnableIRQ(USART1_IRQn);
+
   }
 }
 

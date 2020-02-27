@@ -112,18 +112,34 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel1_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
-
-  /* USER CODE END DMA1_Channel1_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_adc);
-  /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
-
-  /* USER CODE END DMA1_Channel1_IRQn 1 */
+	HAL_DMA_IRQHandler(&hdma_adc);
 }
 
 void EXTI2_3_IRQHandler(void)
 {
 	HAL_GPIO_EXTI_IRQHandler(OUTPUT_ON_SWITCH_PIN);
+}
+
+void EXTI4_15_IRQHandler(void)
+{
+	// Check for hall A interrupt
+	if(__HAL_GPIO_EXTI_GET_IT(HALL_A_PIN) != RESET)
+	{
+		__HAL_GPIO_EXTI_CLEAR_IT(HALL_A_PIN);
+		HAL_GPIO_EXTI_Callback(HALL_A_PIN);
+	}
+	// Check for hall B interrupt
+	if(__HAL_GPIO_EXTI_GET_IT(HALL_B_PIN) != RESET)
+	{
+		__HAL_GPIO_EXTI_CLEAR_IT(HALL_B_PIN);
+		HAL_GPIO_EXTI_Callback(HALL_B_PIN);
+	}
+	// Check for hall C interrupt
+	if(__HAL_GPIO_EXTI_GET_IT(HALL_C_PIN) != RESET)
+	{
+		__HAL_GPIO_EXTI_CLEAR_IT(HALL_C_PIN);
+		HAL_GPIO_EXTI_Callback(HALL_C_PIN);
+	}
 
 }
 
@@ -136,7 +152,9 @@ void TIM1_CC_IRQHandler(void)
 {
 	HAL_TIM_IRQHandler(&htim1);
 }
-/* USER CODE BEGIN 1 */
 
-/* USER CODE END 1 */
+void USART1_IRQHandler(void)
+{
+	HAL_UART_IRQHandler(&huart1);
+}
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -40,7 +40,7 @@ typedef enum
 // Deadtime of the PWM
 #define PWM_DEADTIME					(10U)
 // Maximum ADC value of the throttle
-#define THROTTLE_MAX_VALUE				((uint16_t) 4095)
+#define THROTTLE_MAX_VALUE				((uint16_t) 1040)
 // Maximum pulse width
 #define MAX_AMPLITUDE					((uint32_t) (TIM_PERIOD * .9))
 // Minimum pulse width
