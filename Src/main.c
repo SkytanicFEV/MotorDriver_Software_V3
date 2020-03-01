@@ -63,8 +63,8 @@ int main(void)
 	motorEnable = Disabled;
 #endif
 
-	FindWaveformPhase();
-	UpdateWaveforms();
+//	FindWaveformPhase();
+//	UpdateWaveforms();
 //	// Start the DMA transfer
 //	if(HAL_ADC_Start_DMA(&hadc, adc_buffer, NUM_ADC_CHANNEL) != HAL_OK)
 //	{
@@ -82,10 +82,10 @@ int main(void)
 //		TIM1->CCR2 = (uint16_t) waveformAmplitude;
 //		TIM1->CCR3 = (uint16_t) waveformAmplitude;
 		// Send out J
-		HAL_UART_Transmit(&huart1, "J", 1, 1000);
-
-		// Wait for some cycles
-		for(int i = 0; i++; i < 10000);
+//		HAL_UART_Transmit(&huart1, "HELLO", 5, 1000);
+//
+//		// Wait for some cycles
+//		for(uint32_t i = 0; i++; i < 10000);
 	}
 }
 

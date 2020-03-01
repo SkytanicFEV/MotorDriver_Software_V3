@@ -60,6 +60,9 @@ void Error_Handler(void);
 // Un-comment this to use a manual hall effect control algorithm
 #define MANUAL_HALL
 
+// Comment this to make the board a slave
+//#define MASTER
+
 /* Private defines -----------------------------------------------------------*/
 
 enable_t motorEnable;

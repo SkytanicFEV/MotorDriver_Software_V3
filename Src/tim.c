@@ -54,15 +54,17 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
-//	sSlaveConfig.SlaveMode = TIM_SLAVEMODE_EXTERNAL1;
-//	sSlaveConfig.InputTrigger = TIM_TS_ETRF;
-//	sSlaveConfig.TriggerPolarity = TIM_TRIGGERPOLARITY_NONINVERTED;
-//	sSlaveConfig.TriggerPrescaler = TIM_TRIGGERPRESCALER_DIV1;
-//	sSlaveConfig.TriggerFilter = 0;
-//	if (HAL_TIM_SlaveConfigSynchronization(&htim1, &sSlaveConfig) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
+#ifndef MASTER
+	sSlaveConfig.SlaveMode = TIM_SLAVEMODE_EXTERNAL1;
+	sSlaveConfig.InputTrigger = TIM_TS_ETRF;
+	sSlaveConfig.TriggerPolarity = TIM_TRIGGERPOLARITY_FALLING;
+	sSlaveConfig.TriggerPrescaler = TIM_TRIGGERPRESCALER_DIV1;
+	sSlaveConfig.TriggerFilter = 0;
+	if (HAL_TIM_SlaveConfigSynchronization(&htim1, &sSlaveConfig) != HAL_OK)
+	{
+		Error_Handler();
+	}
+#endif
 //	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
 //	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
 //	if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
@@ -70,7 +72,7 @@ void MX_TIM1_Init(void)
 //		Error_Handler();
 //	}
 	sConfigOC.OCMode = TIM_OCMODE_PWM1;
-	sConfigOC.Pulse = 400;
+	sConfigOC.Pulse = 0;
 	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
 	sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
 	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
@@ -80,7 +82,6 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
-//	sConfigOC.OCMode = TIM_OCMODE_TIMING;
 	if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
 	{
 		Error_Handler();
@@ -89,10 +90,13 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
+#ifdef MASTER
+	sConfigOC.Pulse = 400;
 	if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
 	{
 		Error_Handler();
 	}
+#endif
 	sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
 	sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
 	sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
@@ -104,9 +108,9 @@ void MX_TIM1_Init(void)
 	{
 		Error_Handler();
 	}
-#ifdef ALWAYS_ENABLE
+//#ifdef ALWAYS_ENABLE
 	HAL_TIM_MspPostInit(&htim1);
-#endif
+//#endif
 
 	// Enable clock tree
 	__HAL_RCC_TIM1_CLK_ENABLE();
@@ -150,11 +154,13 @@ void MX_TIM1_Init(void)
 	}
 #endif
 
+#ifdef MASTER
 	// Start Channel 4 Waveforms
 	if(HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_4) != HAL_OK)
 	{
 		Error_Handler();
 	}
+#endif
 
 	// Configure and enable TIM3 interrupt channel in NVIC
 	HAL_NVIC_SetPriority(TIM1_CC_IRQn, 0, 0);
