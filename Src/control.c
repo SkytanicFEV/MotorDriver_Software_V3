@@ -33,10 +33,10 @@ void DisableMotorDriver(void)
 	// Only need to disable if the board is enabled
 	if(motorEnable == Enabled)
 	{
-	    HAL_GPIO_DeInit(GPIOA, PWM_PHASE_U_LOW_PIN | PWM_PHASE_U_HIGH_PIN | PWM_PHASE_W_HIGH_PIN | PWM_PHASE_V_HIGH_PIN
-	                          | MASTER_HEARTBEAT_PIN | EXTERNAL_TRIGGER_PIN);
-
-	    HAL_GPIO_DeInit(GPIOB, PWM_PHASE_W_LOW_PIN | PWM_PHASE_V_LOW_PIN);
+//	    HAL_GPIO_DeInit(GPIOA, PWM_PHASE_U_LOW_PIN | PWM_PHASE_U_HIGH_PIN | PWM_PHASE_W_HIGH_PIN | PWM_PHASE_V_HIGH_PIN
+//	                          | MASTER_HEARTBEAT_PIN | EXTERNAL_TRIGGER_PIN);
+//
+//	    HAL_GPIO_DeInit(GPIOB, PWM_PHASE_W_LOW_PIN | PWM_PHASE_V_LOW_PIN);
 
 		motorEnable = Disabled;
 
@@ -109,10 +109,10 @@ void StartWaveforms(void)
 	// If the waveform phase is valid, then turn on output
 //	if(waveformPhase != waveform_NoWaveform)
 //	{
-		// Update the waveforms based on hall effect values
-		UpdateWaveforms();
-		// Update output status
-		outputState = outputOn;
+	// Update the waveforms based on hall effect values
+	UpdateWaveforms();
+	// Update output status
+	outputState = outputOn;
 //	}
 
 
@@ -130,15 +130,15 @@ void StopWaveforms(void)
 	TIM1->CCR2 = 0;
 	TIM1->CCR3 = 0;
 
-	// Turn off all low side
-	HAL_GPIO_WritePin(PWM_PHASE_U_LOW_PORT, PWM_PHASE_U_LOW_PIN, RESET);
-	HAL_GPIO_WritePin(PWM_PHASE_V_LOW_PORT, PWM_PHASE_V_LOW_PIN, RESET);
-	HAL_GPIO_WritePin(PWM_PHASE_W_LOW_PORT, PWM_PHASE_W_LOW_PIN, RESET);
+//	// Turn off all low side
+//	HAL_GPIO_WritePin(PWM_PHASE_U_LOW_PORT, PWM_PHASE_U_LOW_PIN, RESET);
+//	HAL_GPIO_WritePin(PWM_PHASE_V_LOW_PORT, PWM_PHASE_V_LOW_PIN, RESET);
+//	HAL_GPIO_WritePin(PWM_PHASE_W_LOW_PORT, PWM_PHASE_W_LOW_PIN, RESET);
 
-	// Update phase states
-	phaseU_State = phaseLow;
-	phaseV_State = phaseLow;
-	phaseW_State = phaseLow;
+//	// Update phase states
+//	phaseU_State = phaseLow;
+//	phaseV_State = phaseLow;
+//	phaseW_State = phaseLow;
 
 	// Update output status
 	outputState = outputOff;
@@ -158,7 +158,7 @@ void UpdateWaveforms(void)
 	case waveform_Phase1:
 		// Turn on phase U high side
 		TIM1->CCR1 = waveformAmplitude;
-		// Turn off phase U low side (will get turned back on in interrupts)
+		// Turn off phase U low side
     	HAL_GPIO_WritePin(PWM_PHASE_U_LOW_PORT, PWM_PHASE_U_LOW_PIN, RESET);
     	// Update phase state
     	phaseU_State = phaseHigh;
@@ -194,7 +194,7 @@ void UpdateWaveforms(void)
 
     	// Turn on phase W high side
     	TIM1->CCR3 = waveformAmplitude;
-    	// Turn off phase W low side (will get turned back on in interrupts)
+    	// Turn off phase W low side
     	HAL_GPIO_WritePin(PWM_PHASE_W_LOW_PORT, PWM_PHASE_W_LOW_PIN, RESET);
     	// Update phase state
     	phaseW_State = phaseHigh;
@@ -253,12 +253,13 @@ void UpdateWaveforms(void)
 
     	// Turn on phase V high side
     	TIM1->CCR2 = waveformAmplitude;
-    	// Turn on phase V low side (will get turned back on in interrupts)
+    	// Turn on phase V low side
     	HAL_GPIO_WritePin(PWM_PHASE_V_LOW_PORT, PWM_PHASE_V_LOW_PIN, RESET);
     	// Update phase state
     	phaseV_State = phaseHigh;
 
     	// Turn off phase W high side
+    	HAL_GPIO_WritePin(PWM_PHASE_W_HIGH_PORT, PWM_PHASE_W_HIGH_PIN, RESET);
     	TIM1->CCR3 = 0;
     	// Turn on phase W low side
     	HAL_GPIO_WritePin(PWM_PHASE_W_LOW_PORT, PWM_PHASE_W_LOW_PIN, SET);
@@ -268,7 +269,7 @@ void UpdateWaveforms(void)
 	case waveform_Phase6:
 		// Turn on phase U high side
 		TIM1->CCR1 = waveformAmplitude;
-		// Turn off phase U low side  (will get turned back on in interrupts)
+		// Turn off phase U low side
     	HAL_GPIO_WritePin(PWM_PHASE_U_LOW_PORT, PWM_PHASE_U_LOW_PIN, RESET);
     	// Update phase state
     	phaseU_State = phaseHigh;

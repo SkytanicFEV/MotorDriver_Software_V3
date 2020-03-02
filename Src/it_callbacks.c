@@ -20,27 +20,41 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		if(GPIOD->IDR & OUTPUT_ON_SWITCH_PIN)
 		{
-			EnableMotorDriver();
+			StartWaveforms();
+			motorEnable = Enabled;
+
 		}
 		else
 		{
-			DisableMotorDriver();
+			StopWaveforms();
+			motorEnable = Disabled;
+
 		}
 	}
 	if(GPIO_Pin == HALL_A_PIN)
 	{
-		FindWaveformPhase();
-		UpdateWaveforms();
+		if(motorEnable == Enabled)
+		{
+			FindWaveformPhase();
+			UpdateWaveforms();
+		}
+
 	}
 	if(GPIO_Pin == HALL_B_PIN)
 	{
-		FindWaveformPhase();
-		UpdateWaveforms();
+		if(motorEnable == Enabled)
+		{
+			FindWaveformPhase();
+			UpdateWaveforms();
+		}
 	}
 	if(GPIO_Pin == HALL_C_PIN)
 	{
-		FindWaveformPhase();
-		UpdateWaveforms();
+		if(motorEnable == Enabled)
+		{
+			FindWaveformPhase();
+			UpdateWaveforms();
+		}
 	}
 }
 
@@ -74,19 +88,25 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 		{
 			waveformAmplitude = MIN_AMPLITUDE;
 		}
-		// Update the timer capture compares if they should be running
-		if(phaseU_State == phaseHigh)
+
+		// Update the waveforms if enabled
+		if(motorEnable == Enabled)
 		{
-			TIM1->CCR1 = (uint16_t) waveformAmplitude;
+			// Update the timer capture compares if they should be running
+			if(phaseU_State == phaseHigh)
+			{
+				TIM1->CCR1 = (uint16_t) waveformAmplitude;
+			}
+			if(phaseV_State == phaseHigh)
+			{
+				TIM1->CCR2 = (uint16_t) waveformAmplitude;
+			}
+			if(phaseW_State == phaseHigh)
+			{
+				TIM1->CCR3 = (uint16_t) waveformAmplitude;
+			}
 		}
-		if(phaseV_State == phaseHigh)
-		{
-			TIM1->CCR2 = (uint16_t) waveformAmplitude;
-		}
-		if(phaseW_State == phaseHigh)
-		{
-			TIM1->CCR3 = (uint16_t) waveformAmplitude;
-		}
+
 		// Update the state machine back to the beginning
 //		currentChannel = ADC_Voltage_Phase_U;
 		break;
