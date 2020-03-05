@@ -148,6 +148,10 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	HAL_UART_Transmit(&huart1, "5", 1, 1000);
+	// Convert the rpm to a string and send it back to the IO board
+	int length = 3;
+	uint8_t msg[length];
+	IntToString(rpm, msg, length);
+	HAL_UART_Transmit(&huart1, msg, length, 1000);
 
 }

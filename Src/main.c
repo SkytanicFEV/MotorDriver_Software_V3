@@ -40,6 +40,8 @@ int main(void)
 
 	hall_tim_counts = 0;
 
+	rpm = 10;
+
 	/* MCU Configuration--------------------------------------------------------*/
 
 	// Reset of all peripherals, Initializes the Flash interface and the Systick.

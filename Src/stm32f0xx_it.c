@@ -160,6 +160,24 @@ void TIM1_CC_IRQHandler(void)
 
 void USART1_IRQHandler(void)
 {
+	static uint8_t last_char;
+	rx_buffer[last_char] = huart1.Instance->RDR;
+	if(rx_buffer[last_char] == BOARD_ADDRESS)
+	{
+		last_char++;
+
+	}
+	if(rx_buffer[last_char] == RPM_MESSAGE)
+	{
+		// Convert the rpm to a string and send it back to the IO board
+		int length = 3;
+		uint8_t msg[length];
+		IntToString(rpm, msg, length);
+		HAL_UART_Transmit(&huart1, msg, length, 1000);
+
+		last_char = 0;
+	}
+
 	HAL_UART_IRQHandler(&huart1);
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

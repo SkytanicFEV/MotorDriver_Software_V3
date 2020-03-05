@@ -28,6 +28,7 @@
 
 #define RX_BUFFER_SIZE				(10U)
 
+#define RPM_MESSAGE					((uint8_t) 'r')
 
 extern UART_HandleTypeDef huart1;
 

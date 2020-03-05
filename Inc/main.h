@@ -34,6 +34,7 @@ extern "C" {
 #include "gpio.h"
 #include "tim.h"
 #include "usart.h"
+#include "stringConvert.h"
 
 // Enum for phases
 typedef enum
