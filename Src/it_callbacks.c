@@ -56,6 +56,27 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			UpdateWaveforms();
 		}
 	}
+
+	if(GPIO_Pin == EXTERNAL_TRIGGER_PIN)
+	{
+		// Reset the timer count
+		TIM1->CNT = 0;
+		// If a pin is active turn it on
+		if(phaseU_State == phaseHigh)
+		{
+	    	HAL_GPIO_WritePin(PWM_PHASE_U_HIGH_PORT, PWM_PHASE_U_HIGH_PIN, SET);
+		}
+		if(phaseV_State == phaseHigh)
+		{
+	    	HAL_GPIO_WritePin(PWM_PHASE_V_HIGH_PORT, PWM_PHASE_V_HIGH_PIN, SET);
+		}
+		if(phaseW_State == phaseHigh)
+		{
+	    	HAL_GPIO_WritePin(PWM_PHASE_W_HIGH_PORT, PWM_PHASE_W_HIGH_PIN, SET);
+		}
+	}
+
+
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
@@ -76,7 +97,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 		break;
 	case(ADC_Throttle):
 		// Get the current ADC conversion
-		throttleValue = (ADC1->DR / 2) + (throttleValue / 2);
+		throttleValue = (ADC1->DR / THROTTLE_AVERAGE_CONST) + (throttleValue * (THROTTLE_AVERAGE_CONST - 1) / THROTTLE_AVERAGE_CONST);
 		// Update the waveform amplitudes
 		waveformAmplitude = TIM_PERIOD * throttleValue / (THROTTLE_MAX_VALUE);
 		// Check for maximums
@@ -106,6 +127,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 				TIM1->CCR3 = (uint16_t) waveformAmplitude;
 			}
 		}
+
+		// Always have channel 4 running
+//		TIM1->CCR4 = (uint16_t) waveformAmplitude;
+
 
 		// Update the state machine back to the beginning
 //		currentChannel = ADC_Voltage_Phase_U;

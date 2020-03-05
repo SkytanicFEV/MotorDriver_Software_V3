@@ -294,6 +294,14 @@ void UpdateWaveforms(void)
 
 		return;
 	}
-
 }
 
+/**
+  * @brief Function to calculate RPM of the motor
+  * @param none
+  * @retval none
+  */
+void CalculateRPM(void)
+{
+
+}

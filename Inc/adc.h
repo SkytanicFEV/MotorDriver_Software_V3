@@ -34,6 +34,7 @@
 #include "main.h"
 
 #define NUM_ADC_CHANNEL				(4U)
+#define THROTTLE_AVERAGE_CONST		(4U)
 
 ADC_HandleTypeDef hadc;
 DMA_HandleTypeDef hdma_adc;

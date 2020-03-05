@@ -38,6 +38,8 @@ int main(void)
 	// Start with the phase U voltage channel on the ADC
 	currentChannel = ADC_Throttle;
 
+	HAL_tim_counts = 0;
+
 	/* MCU Configuration--------------------------------------------------------*/
 
 	// Reset of all peripherals, Initializes the Flash interface and the Systick.
