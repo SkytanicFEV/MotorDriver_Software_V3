@@ -167,7 +167,7 @@ void USART1_IRQHandler(void)
 		last_char++;
 
 	}
-	if(rx_buffer[last_char] == RPM_MESSAGE)
+	if((rx_buffer[last_char] == RPM_MESSAGE) && (rx_buffer[last_char - 1] == BOARD_ADDRESS))
 	{
 		// Convert the rpm to a string and send it back to the IO board
 		int length = 3;
