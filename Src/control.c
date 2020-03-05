@@ -303,5 +303,10 @@ void UpdateWaveforms(void)
   */
 void CalculateRPM(void)
 {
+	// Calculate the RPM
+	rpm = hall_tim_counts * 60 / 50000;
+	rpm /= NUM_POLES;
 
+	// Reset the hall timer counts
+	hall_tim_counts = 0;
 }

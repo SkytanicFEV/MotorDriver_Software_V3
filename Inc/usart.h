@@ -26,7 +26,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#define RX_BUFFER_SIZE				(10U)
+
+
 extern UART_HandleTypeDef huart1;
+
+// Make rx buffer
+uint8_t rx_buffer[RX_BUFFER_SIZE];
+
 
 void MX_USART1_UART_Init(void);
 

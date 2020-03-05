@@ -38,7 +38,7 @@ int main(void)
 	// Start with the phase U voltage channel on the ADC
 	currentChannel = ADC_Throttle;
 
-	HAL_tim_counts = 0;
+	hall_tim_counts = 0;
 
 	/* MCU Configuration--------------------------------------------------------*/
 
@@ -75,10 +75,14 @@ int main(void)
 //
 //	HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 1, 0);
 //	HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+	HAL_UART_Receive_IT(&huart1, rx_buffer, RX_BUFFER_SIZE);
 
 	// Infinite loop
 	while (1)
 	{
+
+//		for(int i = 0; i < 100000; i++);
+
 //		// Update the timer capture compares
 //		TIM1->CCR1 = (uint16_t) waveformAmplitude;
 //		TIM1->CCR2 = (uint16_t) waveformAmplitude;
