@@ -42,7 +42,7 @@ typedef enum
 // Maximum ADC value of the throttle
 #define THROTTLE_MAX_VALUE				((uint16_t) 1040)
 // Maximum pulse width
-#define MAX_AMPLITUDE					((uint32_t) (TIM_PERIOD * .9))
+#define MAX_AMPLITUDE					((uint32_t) (TIM_PERIOD * .85))
 // Minimum pulse width
 #define MIN_AMPLITUDE					((uint32_t) 50)
 
@@ -106,5 +106,11 @@ void StopWaveforms(void);
   */
 void UpdateWaveforms(void);
 
+/**
+  * @brief Function to calculate RPM of the motor
+  * @param none
+  * @retval none
+  */
+void CalculateRPM(void);
 
 #endif /* CONTROL_H_ */

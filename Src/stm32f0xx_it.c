@@ -140,7 +140,12 @@ void EXTI4_15_IRQHandler(void)
 		__HAL_GPIO_EXTI_CLEAR_IT(HALL_C_PIN);
 		HAL_GPIO_EXTI_Callback(HALL_C_PIN);
 	}
-
+	// Check for external interrupt
+	if(__HAL_GPIO_EXTI_GET_IT(EXTERNAL_TRIGGER_PIN) != RESET)
+	{
+		__HAL_GPIO_EXTI_CLEAR_IT(EXTERNAL_TRIGGER_PIN);
+		HAL_GPIO_EXTI_Callback(EXTERNAL_TRIGGER_PIN);
+	}
 }
 
 void ADC1_IRQHandler(void)

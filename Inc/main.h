@@ -61,10 +61,16 @@ void Error_Handler(void);
 #define MANUAL_HALL
 
 // Comment this to make the board a slave
-//#define MASTER
+#define MASTER
+
+#define NUM_POLES
 
 /* Private defines -----------------------------------------------------------*/
 
+// Number of timer counts since last HAL interrupt
+uint16_t HAL_tim_counts;
+
+// Status of motor enable
 enable_t motorEnable;
 
 #ifdef __cplusplus

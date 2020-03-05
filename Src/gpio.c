@@ -72,6 +72,17 @@ void MX_GPIO_Init(void)
 		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 #endif
 
+#ifndef MASTER
+		// Configure external trigger for slave mode as GPIO interrupt
+		GPIO_InitStruct.Pin = EXTERNAL_TRIGGER_PIN;
+		GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+		GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+		HAL_GPIO_Init(EXTERNAL_TRIGGER_PORT, &GPIO_InitStruct);
+
+		// Enable interrupts in the NVIC
+		HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
+		HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
+#endif
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
