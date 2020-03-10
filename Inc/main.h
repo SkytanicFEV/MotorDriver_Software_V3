@@ -62,11 +62,11 @@ void Error_Handler(void);
 #define MANUAL_HALL
 
 // Comment this to make the board a slave
-#define MASTER
+//#define MASTER
 
 #ifdef MASTER
 #define BOARD_ADDRESS						((uint8_t) '1')
-#elif
+#else if
 #define BOARD_ADDRESS						((uint8_t) '2')
 #endif
 
