@@ -165,18 +165,35 @@ void USART1_IRQHandler(void)
 	if(rx_buffer[last_char] == BOARD_ADDRESS)
 	{
 		last_char++;
-
 	}
-	if((rx_buffer[last_char] == RPM_MESSAGE) && (rx_buffer[last_char - 1] == BOARD_ADDRESS))
+	else if((rx_buffer[last_char] == RPM_MESSAGE) && (rx_buffer[last_char - 1] == BOARD_ADDRESS))
 	{
 		// Convert the rpm to a string and send it back to the IO board
-		int length = 3;
-		uint8_t msg[length];
-		IntToString(rpm, msg, length);
-		HAL_UART_Transmit(&huart1, msg, length, 1000);
-
+		uint8_t msg[3];
+		IntToString(rpm, msg, 3);
+//		msg[3] = '\n';
+		HAL_UART_Transmit(&huart1, msg, 3, 1000);
 		last_char = 0;
+
 	}
+//	last_char = 0;
+//	if(rx_buffer[last_char] == '\n')
+//	{
+//		if((rx_buffer[last_char - 1] == RPM_MESSAGE) && (rx_buffer[last_char - 2] == BOARD_ADDRESS))
+//		{
+//			// Convert the rpm to a string and send it back to the IO board
+//			uint8_t msg[4];
+//			IntToString(rpm, msg, 3);
+//			msg[3] = '\n';
+//			HAL_UART_Transmit(&huart1, msg, 4, 1000);
+//
+//		}
+//		last_char = 0;
+//	}
+//	else
+//	{
+//		last_char++;
+//	}
 
 	HAL_UART_IRQHandler(&huart1);
 }

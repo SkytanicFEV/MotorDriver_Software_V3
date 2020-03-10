@@ -40,7 +40,7 @@ int main(void)
 
 	hall_tim_counts = 0;
 
-	rpm = 10;
+	rpm = 11;
 
 	/* MCU Configuration--------------------------------------------------------*/
 
@@ -82,6 +82,13 @@ int main(void)
 	// Infinite loop
 	while (1)
 	{
+		rpm++;
+
+		if(rpm >= 100)
+		{
+			rpm = 0;
+		}
+
 
 //		for(int i = 0; i < 100000; i++);
 
