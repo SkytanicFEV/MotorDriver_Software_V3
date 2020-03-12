@@ -40,7 +40,7 @@ int main(void)
 
 	hall_tim_counts = 0;
 
-	rpm = 11;
+	rpm = 0;
 
 	/* MCU Configuration--------------------------------------------------------*/
 
@@ -84,7 +84,7 @@ int main(void)
 	{
 		rpm++;
 
-		if(rpm >= 100)
+		if(rpm >= 200)
 		{
 			rpm = 0;
 		}
@@ -99,8 +99,8 @@ int main(void)
 		// Send out J
 //		HAL_UART_Transmit(&huart1, "HELLO", 5, 1000);
 //
-//		// Wait for some cycles
-//		for(uint32_t i = 0; i++; i < 10000);
+		// Wait a bit
+		HAL_Delay(500);
 	}
 }
 

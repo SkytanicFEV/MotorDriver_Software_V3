@@ -79,7 +79,7 @@ void Error_Handler(void);
 
 // Number of timer counts since last HAL interrupt
 uint32_t hall_tim_counts;
-uint16_t rpm;
+volatile uint16_t rpm;
 
 // Status of motor enable
 enable_t motorEnable;
