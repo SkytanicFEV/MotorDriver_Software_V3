@@ -165,7 +165,16 @@ void USART1_IRQHandler(void)
 	if(rx_buffer[last_char] == BOARD_ADDRESS)
 	{
 		last_char++;
+		// Turn on the TX pin
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+	    GPIO_InitStruct.Pin = GPIO_PIN_6;
+	    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	    GPIO_InitStruct.Pull = GPIO_PULLUP;
+	    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	    GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
+	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
+
 	else if((rx_buffer[last_char] == RPM_MESSAGE) && (rx_buffer[last_char - 1] == BOARD_ADDRESS))
 	{
 		// Convert the rpm to a string and send it back to the IO board
@@ -175,6 +184,17 @@ void USART1_IRQHandler(void)
 		HAL_UART_Transmit(&huart1, msg, 3, 1000);
 		last_char = 0;
 
+	}
+	else
+	{
+		// Turn off the TX pin
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+	    GPIO_InitStruct.Pin = GPIO_PIN_6;
+	    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	    GPIO_InitStruct.Pull = GPIO_PULLUP;
+	    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	    GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
+	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
 //	last_char = 0;
 //	if(rx_buffer[last_char] == '\n')
