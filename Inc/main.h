@@ -66,7 +66,7 @@ void Error_Handler(void);
 
 #ifdef MASTER
 #define BOARD_ADDRESS						((uint8_t) '1')
-#else if
+#else
 #define BOARD_ADDRESS						((uint8_t) '2')
 #endif
 

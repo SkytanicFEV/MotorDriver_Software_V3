@@ -89,6 +89,8 @@ int main(void)
 			rpm = 0;
 		}
 
+//		rpm = 111;
+
 
 //		for(int i = 0; i < 100000; i++);
 
