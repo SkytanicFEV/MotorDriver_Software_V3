@@ -42,6 +42,8 @@ int main(void)
 
 	rpm = 0;
 
+	uint16_t prev_rpm = 0;
+
 	/* MCU Configuration--------------------------------------------------------*/
 
 	// Reset of all peripherals, Initializes the Flash interface and the Systick.
@@ -82,12 +84,12 @@ int main(void)
 	// Infinite loop
 	while (1)
 	{
-		rpm++;
-
-		if(rpm >= 200)
-		{
-			rpm = 0;
-		}
+//		rpm++;
+//
+//		if(rpm >= 200)
+//		{
+//			rpm = 0;
+//		}
 
 //		rpm = 111;
 
@@ -103,6 +105,14 @@ int main(void)
 //
 		// Wait a bit
 		HAL_Delay(500);
+		if(prev_rpm == rpm && rpm>0)
+		{
+			rpm = 0;
+		}
+		else
+		{
+			prev_rpm = rpm;
+		}
 	}
 }
 
