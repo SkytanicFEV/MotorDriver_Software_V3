@@ -18,19 +18,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	// Check to see if the output enable pin was interrupted
 	if(GPIO_Pin == OUTPUT_ON_SWITCH_PIN)
 	{
+		// Based on the switch state, start or stop the waveform
 		if(GPIOD->IDR & OUTPUT_ON_SWITCH_PIN)
 		{
 			StartWaveforms();
 			motorEnable = Enabled;
-
 		}
 		else
 		{
 			StopWaveforms();
 			motorEnable = Disabled;
-
 		}
 	}
+	// When a Hall pin interrupts find the new phase state and update the waveforms
 	if(GPIO_Pin == HALL_A_PIN)
 	{
 		if(motorEnable == Enabled)
@@ -38,6 +38,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			FindWaveformPhase();
 			UpdateWaveforms();
 		}
+		// Every time hall A pin interrupts calculate the RPM
 		CalculateRPM();
 
 	}
@@ -58,6 +59,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		}
 	}
 
+	// If using an external trigger to synchronize, turn on the gates with it
 	if(GPIO_Pin == EXTERNAL_TRIGGER_PIN)
 	{
 		// Reset the timer count
@@ -80,6 +82,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 }
 
+/**
+  * @brief  Handles call backs from the ADC
+  * @param  ADC channel that interrupted
+  * @retval None
+  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 {
 	switch(currentChannel)
@@ -128,13 +135,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 				TIM1->CCR3 = (uint16_t) waveformAmplitude;
 			}
 		}
-
-		// Always have channel 4 running
-//		TIM1->CCR4 = (uint16_t) waveformAmplitude;
-
-
-		// Update the state machine back to the beginning
-//		currentChannel = ADC_Voltage_Phase_U;
 		break;
 	default:
 		break;
@@ -142,17 +142,12 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 
 }
 
+/**
+  * @brief  Handles call backs from timer PWM pulse interrupts
+  * @param  Timer that interrupted
+  * @retval None
+  */
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
 	hall_tim_counts++;
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	// Convert the rpm to a string and send it back to the IO board
-//	int length = 3;
-//	uint8_t msg[length];
-//	IntToString(rpm, msg, length);
-//	HAL_UART_Transmit(&huart1, msg, length, 1000);
-
 }

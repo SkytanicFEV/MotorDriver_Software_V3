@@ -69,40 +69,11 @@ int main(void)
 	motorEnable = Disabled;
 #endif
 
-//	FindWaveformPhase();
-//	UpdateWaveforms();
-//	// Start the DMA transfer
-//	if(HAL_ADC_Start_DMA(&hadc, adc_buffer, NUM_ADC_CHANNEL) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
-//
-//	HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 1, 0);
-//	HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 	HAL_UART_Receive_IT(&huart1, rx_buffer, RX_BUFFER_SIZE);
 
 	// Infinite loop
 	while (1)
 	{
-//		rpm++;
-//
-//		if(rpm >= 200)
-//		{
-//			rpm = 0;
-//		}
-
-//		rpm = 111;
-
-
-//		for(int i = 0; i < 100000; i++);
-
-//		// Update the timer capture compares
-//		TIM1->CCR1 = (uint16_t) waveformAmplitude;
-//		TIM1->CCR2 = (uint16_t) waveformAmplitude;
-//		TIM1->CCR3 = (uint16_t) waveformAmplitude;
-		// Send out J
-//		HAL_UART_Transmit(&huart1, "HELLO", 5, 1000);
-//
 		// Wait a bit
 		HAL_Delay(500);
 		if(prev_rpm == rpm && rpm>0)

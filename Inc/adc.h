@@ -50,12 +50,4 @@ void MX_ADC_Init(void);
 #endif
 #endif /*__ adc_H */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

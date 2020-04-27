@@ -38,12 +38,4 @@ void MX_DMA_Init(void)
 
 }
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

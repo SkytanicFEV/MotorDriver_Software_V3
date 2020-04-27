@@ -37,8 +37,4 @@ void MX_DMA_Init(void);
 
 #endif /* __dma_H */
 
-/**
-  * @}
-  */
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

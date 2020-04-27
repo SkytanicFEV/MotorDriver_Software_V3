@@ -28,7 +28,6 @@ static int NumDigitsInInt(int num)
   * @param n = integer to convert, string = resulting string, length = lenght of string = number of digits to convert
   * @retval void
   */
-
 void IntToString(int n, char * string, int length)
 {
 

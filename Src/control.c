@@ -106,16 +106,11 @@ void StartWaveforms(void)
 {
 	// Look at the hall effects to determine the phase
 	FindWaveformPhase();
-	// If the waveform phase is valid, then turn on output
-//	if(waveformPhase != waveform_NoWaveform)
-//	{
+
 	// Update the waveforms based on hall effect values
 	UpdateWaveforms();
 	// Update output status
 	outputState = outputOn;
-//	}
-
-
 }
 
 /**
@@ -130,19 +125,8 @@ void StopWaveforms(void)
 	TIM1->CCR2 = 0;
 	TIM1->CCR3 = 0;
 
-//	// Turn off all low side
-//	HAL_GPIO_WritePin(PWM_PHASE_U_LOW_PORT, PWM_PHASE_U_LOW_PIN, RESET);
-//	HAL_GPIO_WritePin(PWM_PHASE_V_LOW_PORT, PWM_PHASE_V_LOW_PIN, RESET);
-//	HAL_GPIO_WritePin(PWM_PHASE_W_LOW_PORT, PWM_PHASE_W_LOW_PIN, RESET);
-
-//	// Update phase states
-//	phaseU_State = phaseLow;
-//	phaseV_State = phaseLow;
-//	phaseW_State = phaseLow;
-
 	// Update output status
 	outputState = outputOff;
-
 }
 
 /**

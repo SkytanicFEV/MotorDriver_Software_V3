@@ -25,8 +25,7 @@ void MX_ADC_Init(void)
 {
 	ADC_ChannelConfTypeDef sConfig = {0};
 
-	/** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-	*/
+	// Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
 	hadc.Instance = ADC1;
 	hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
 	hadc.Init.Resolution = ADC_RESOLUTION_12B;
@@ -45,37 +44,20 @@ void MX_ADC_Init(void)
 	{
 		Error_Handler();
 	}
-	/** Configure for the selected ADC regular channel to be converted.
-	*/
+
+	// Configure for the selected ADC regular channel to be converted.
 	sConfig.Channel = ADC_CHANNEL_0;
 	sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
 	sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
-//	if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
-//	/** Configure for the selected ADC regular channel to be converted.
-//	*/
-//	sConfig.Channel = ADC_CHANNEL_1;
-//	if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
-//	/** Configure for the selected ADC regular channel to be converted.
-//	*/
-//	sConfig.Channel = ADC_CHANNEL_2;
-//	if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
-	/** Configure for the selected ADC regular channel to be converted.
-	*/
+
+	// Configure for the selected ADC regular channel to be converted.
 	sConfig.Channel = ADC_CHANNEL_6;
 	if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
 	{
 		Error_Handler();
 	}
 
+	// Enable interrupts in the NVIC
 	HAL_NVIC_SetPriority(ADC1_IRQn, 1, 0);
 	HAL_NVIC_EnableIRQ(ADC1_IRQn);
 
@@ -85,15 +67,16 @@ void MX_ADC_Init(void)
 	// Micro Specific Processor Initiation
 	HAL_ADC_MspInit(&hadc);
 
+	// Start the ADC with interrupts
 	if(HAL_ADC_Start_IT(&hadc) != HAL_OK)
 	{
 		Error_Handler();
 	}
 }
 
+// Microprocessor specific initialize function
 void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
 {
-
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 	if(adcHandle->Instance==ADC1)
 	{
@@ -112,8 +95,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-		/* ADC1 DMA Init */
-		/* ADC Init */
+		// ADC1 DMA Init
 		hdma_adc.Instance = DMA1_Channel1;
 		hdma_adc.Init.Direction = DMA_PERIPH_TO_MEMORY;
 		hdma_adc.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -127,13 +109,14 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
 		  Error_Handler();
 		}
 
+		// Link the dma channel
 		__HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc);
 	}
 }
 
+// Microprocessor specific de-initialization function
 void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 {
-
 	if(adcHandle->Instance==ADC1)
 	{
 		/* Peripheral clock disable */

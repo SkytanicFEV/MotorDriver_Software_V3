@@ -73,8 +73,6 @@ void Error_Handler(void);
 // Number of poles in the motor
 #define NUM_POLES							(4U)
 
-
-
 /* Private defines -----------------------------------------------------------*/
 
 // Number of timer counts since last HAL interrupt

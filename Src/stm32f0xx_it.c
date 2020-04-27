@@ -115,11 +115,17 @@ void DMA1_Channel1_IRQHandler(void)
 	HAL_DMA_IRQHandler(&hdma_adc);
 }
 
+/**
+  * @brief This function handles pins 2 and 3 external interrupts
+  */
 void EXTI2_3_IRQHandler(void)
 {
 	HAL_GPIO_EXTI_IRQHandler(OUTPUT_ON_SWITCH_PIN);
 }
 
+/**
+  * @brief This function handles pins 4 to 15 external interrupts
+  */
 void EXTI4_15_IRQHandler(void)
 {
 	// Check for hall A interrupt
@@ -148,24 +154,35 @@ void EXTI4_15_IRQHandler(void)
 	}
 }
 
+/**
+  * @brief This function handles ADC 1 interrupts
+  */
 void ADC1_IRQHandler(void)
 {
 	HAL_ADC_IRQHandler(&hadc);
 }
 
+/**
+  * @brief This function handles timer 1 capture compare interrupts
+  */
 void TIM1_CC_IRQHandler(void)
 {
 	HAL_TIM_IRQHandler(&htim1);
 }
 
+/**
+  * @brief This function handles USART 1 interrupts
+  */
 void USART1_IRQHandler(void)
 {
 	static uint8_t last_char;
+	// Get the character received over UART
 	rx_buffer[last_char] = huart1.Instance->RDR;
 	if(rx_buffer[last_char] == BOARD_ADDRESS)
 	{
 		last_char++;
-		// Turn on the TX pin
+		// If the character was the board address then set up the TX to begin transmitting
+		// This is done so that both boards are not messing with the inter-board communication
 		GPIO_InitTypeDef GPIO_InitStruct = {0};
 	    GPIO_InitStruct.Pin = GPIO_PIN_6;
 	    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -180,14 +197,13 @@ void USART1_IRQHandler(void)
 		// Convert the rpm to a string and send it back to the IO board
 		uint8_t msg[3];
 		IntToString(rpm, msg, 3);
-//		msg[3] = '\n';
 		HAL_UART_Transmit(&huart1, msg, 3, 1000);
 		last_char = 0;
 
 	}
 	else
 	{
-		// Turn off the TX pin
+		// Once communication is done reset the TX pin so that it does not mess with communication
 		GPIO_InitTypeDef GPIO_InitStruct = {0};
 	    GPIO_InitStruct.Pin = GPIO_PIN_6;
 	    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -196,25 +212,8 @@ void USART1_IRQHandler(void)
 	    GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
 	    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 	}
-//	last_char = 0;
-//	if(rx_buffer[last_char] == '\n')
-//	{
-//		if((rx_buffer[last_char - 1] == RPM_MESSAGE) && (rx_buffer[last_char - 2] == BOARD_ADDRESS))
-//		{
-//			// Convert the rpm to a string and send it back to the IO board
-//			uint8_t msg[4];
-//			IntToString(rpm, msg, 3);
-//			msg[3] = '\n';
-//			HAL_UART_Transmit(&huart1, msg, 4, 1000);
-//
-//		}
-//		last_char = 0;
-//	}
-//	else
-//	{
-//		last_char++;
-//	}
 
+	// Call the HAL interrupt handler to properly deal with interrupt
 	HAL_UART_IRQHandler(&huart1);
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

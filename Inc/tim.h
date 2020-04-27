@@ -41,12 +41,4 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 #endif
 #endif /*__ tim_H */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

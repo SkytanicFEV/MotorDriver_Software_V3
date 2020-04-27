@@ -20,14 +20,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "tim.h"
 
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
 
-/* TIM1 init function */
+// TIM1 init function
 void MX_TIM1_Init(void)
 {
 	TIM_SlaveConfigTypeDef sSlaveConfig = {0};
@@ -35,6 +31,7 @@ void MX_TIM1_Init(void)
 	TIM_OC_InitTypeDef sConfigOC = {0};
 	TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
 
+	// Set up timer 1 in up mode with no prescaler or division
 	htim1.Instance = TIM1;
 	htim1.Init.Prescaler = 0;
 	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -71,12 +68,8 @@ void MX_TIM1_Init(void)
 //	TIM1->PSC = 47999; /* (4) */
 //	TIM1->CR1 |= TIM_CR1_CEN;
 #endif
-//	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-//	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-//	if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
+
+	// Setup the PWM channels
 	sConfigOC.OCMode = TIM_OCMODE_PWM1;
 	sConfigOC.Pulse = 0;
 	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
@@ -97,6 +90,7 @@ void MX_TIM1_Init(void)
 		Error_Handler();
 	}
 #ifdef MASTER
+	// If the board is the master output a sqare wave at the switching frequency for synchronization
 	sConfigOC.Pulse = TIM_PERIOD / 2;
 	if (HAL_TIM_OC_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
 	{
@@ -123,11 +117,6 @@ void MX_TIM1_Init(void)
 	// Enable clock tree
 	__HAL_RCC_TIM1_CLK_ENABLE();
 
-	// Start Waveforms
-//	if(HAL_TIM_Base_Start(&htim1) != HAL_OK)
-//	{
-//		Error_Handler();
-//	}
 	// Start Channel 1 Waveforms
 	if(HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1) != HAL_OK)
 	{
@@ -174,7 +163,9 @@ void MX_TIM1_Init(void)
 	HAL_NVIC_SetPriority(TIM1_CC_IRQn, 3, 0);
 	HAL_NVIC_EnableIRQ(TIM1_CC_IRQn);
 }
-/* TIM3 init function */
+
+// TIM3 init function
+// This timer was an option to be used for Hall effect feedback in hardware, but it was never implemented
 void MX_TIM3_Init(void)
 {
 	TIM_HallSensor_InitTypeDef sConfig = {0};
@@ -202,6 +193,7 @@ void MX_TIM3_Init(void)
 	}
 }
 
+// Microprocessor specific timer base initialization
 void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
 {
 
@@ -224,6 +216,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
   }
 }
 
+// Microprocessor specific hall sensor initialization
 void HAL_TIMEx_HallSensor_MspInit(TIM_HandleTypeDef* timex_hallsensorHandle)
 {
 
@@ -254,6 +247,8 @@ void HAL_TIMEx_HallSensor_MspInit(TIM_HandleTypeDef* timex_hallsensorHandle)
     HAL_GPIO_Init(HALL_C_PORT, &GPIO_InitStruct);
   }
 }
+
+// Microprocessor specific timer initialization
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 {
 
@@ -295,9 +290,9 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 #endif
 	}
-
 }
 
+// Microprocessor specific de-initialization function
 void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 {
 
@@ -323,6 +318,7 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
   }
 }
 
+// Microprocessor specific timer de-initialization function
 void HAL_TIMEx_HallSensor_MspDeInit(TIM_HandleTypeDef* timex_hallsensorHandle)
 {
 

@@ -22,11 +22,11 @@
 
 UART_HandleTypeDef huart1;
 
-/* USART1 init function */
-
+// USART1 init function */
 void MX_USART1_UART_Init(void)
 {
 
+	// Initialize UASRT in UART with 38400 BAUD
 	huart1.Instance = USART1;
 	huart1.Init.BaudRate = 38400;
 	huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -42,22 +42,12 @@ void MX_USART1_UART_Init(void)
 		Error_Handler();
 	}
 
-	//Disable interrupts except RXNEIE, enable FIFO
-//	huart1.Instance->CR1 = 0;
-//	huart1.Instance->CR1 |= UART_RXNEIE | UART_FIFOEN | UART_TE | UART_RE;
-//
-//	//Configure FIFO thresholds
-//	huart1.Instance->CR3 |= UART_TXFIFO_HALF_DEPTH | UART_RXFTIE_BIT | UART_RXFIFO_3OUT4_DEPTH;
-//
-//	//Enable USART2
-//	huart1.Instance->CR1 |= UART_UE;
-
-
 	// Configure and enable USART1 interrupt channel in NVIC
 	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(USART1_IRQn);
 }
 
+// Microprocessor specific UART initialization
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
 
@@ -86,6 +76,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
   }
 }
 
+// Microprocessor specific UART de-initialization
 void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 {
 

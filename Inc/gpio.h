@@ -67,12 +67,4 @@ void MX_GPIO_Init(void);
 #endif
 #endif /*__ pinoutConfig_H */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
